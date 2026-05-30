@@ -1,57 +1,82 @@
-# React + TypeScript + Vite
+# XHS Focus Mode - 小红书专注模式
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+一个模仿小红书界面的前端项目，加入了专注模式功能，帮助用户更高效地浏览内容。
 
-Currently, two official plugins are available:
+## ✨ 功能特性
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🎯 专注模式
+- 精简的界面设计，减少干扰
+- 只展示核心内容，提高阅读效率
+- 帮助用户集中注意力，避免信息过载
 
-## Expanding the ESLint configuration
+### 📱 主要功能
+- **首页**：浏览精选内容卡片
+- **发现**：探索更多分类内容
+- **搜索**：查找感兴趣的话题
+- **消息**：查看互动通知（演示版）
+- **个人中心**：用户主页展示
+- **设置**：个性化配置
+- **兴趣仪表盘**：数据可视化展示
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ 技术栈
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **前端框架**：React 18 + TypeScript
+- **构建工具**：Vite
+- **样式方案**：Tailwind CSS
+- **路由管理**：React Router
+- **状态管理**：Zustand
+- **图标库**：Lucide React
+
+## 🚀 快速开始
+
+### 安装依赖
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  extends: [
-    // other configs...
-    // Enable lint rules for React
-    reactX.configs['recommended-typescript'],
-    // Enable lint rules for React DOM
-    reactDom.configs.recommended,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 开发模式
+```bash
+npm run dev
 ```
+
+### 构建生产版本
+```bash
+npm run build
+```
+
+### 预览构建结果
+```bash
+npm run preview
+```
+
+## 📦 部署
+
+本项目已部署到 GitHub Pages：
+
+**访问地址**：https://BettyXu2001.github.io/xhs-focus-mode
+
+## 📁 项目结构
+
+```
+xhs-focus-mode/
+├── src/
+│   ├── components/      # 组件目录
+│   ├── pages/          # 页面目录
+│   ├── data/           # 数据文件
+│   ├── store/          # 状态管理
+│   └── hooks/          # 自定义 hooks
+├── public/             # 静态资源
+└── dist/               # 构建输出
+```
+
+## 🎨 特色功能
+
+1. **专注模式**：一键切换到专注浏览模式
+2. **响应式设计**：适配各种屏幕尺寸
+3. **深色模式**：支持深色/浅色主题切换
+4. **屏幕使用时间**：设置每日使用时长限制
+5. **数据可视化**：兴趣分布饼图展示
+
+## 📄 License
+
+MIT License
