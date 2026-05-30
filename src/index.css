@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #1a1a1a;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-container {
+  width: 375px;
+  height: 812px;
+  background-color: #fff;
+  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  border: 8px solid #e0e0e0;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  background-color: #fff;
+  padding-bottom: 80px;
+}
+
+.page.active {
+  display: flex;
+}
+
+.scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 8px;
+}
+
+.category-tab {
+  position: relative;
+}
+
+.category-tab.active {
+  color: #1a1a1a;
+}
+
+.category-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: #1a1a1a;
+}
+
+.switch-track {
+  width: 32px;
+  height: 18px;
+  background-color: #d1d1d6;
+  border-radius: 9px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.switch-track.active {
+  background-color: #34c759;
+}
+
+.switch-thumb {
+  width: 14px;
+  height: 14px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.switch-track.active .switch-thumb {
+  transform: translateX(14px);
+}
+
+.nav-item.active {
+  color: #ff2442;
+  font-weight: bold;
+}
