@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { ArrowLeft, Search, Camera, Trash2, Flame, Sparkles } from 'lucide-react'
+import { ArrowLeft, Search, Camera, Trash2, Flame, Sparkles, SlidersHorizontal } from 'lucide-react'
 import { useAppStore } from '@/store/appStore'
 import { hotSearchList, guessSearchList } from '@/data/mockData'
 
 export function SearchPage() {
-  const { searchHistory, addSearchHistory, clearSearchHistory, setCurrentPage, currentTab } = useAppStore()
+  const { searchHistory, addSearchHistory, clearSearchHistory, setCurrentPage, currentTab, focusMode } = useAppStore()
   const [query, setQuery] = useState('')
 
   const handleSearch = () => {
@@ -53,6 +53,12 @@ export function SearchPage() {
         </div>
       </header>
       <main className="px-4 py-4">
+        {focusMode && (
+          <div className="bg-accent-primary/5 border border-accent-primary/20 rounded-xl px-4 py-3 flex items-center gap-2 mb-6">
+            <SlidersHorizontal size={16} className="text-accent-primary" />
+            <span className="text-sm text-accent-primary font-medium">专注模式已开启，沉浸式检索</span>
+          </div>
+        )}
         {searchHistory.length > 0 && (
           <div className="mb-6">
             <div className="flex items-center justify-between mb-3">
@@ -81,57 +87,61 @@ export function SearchPage() {
             </div>
           </div>
         )}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles size={16} className="text-accent-orange" />
-            <h2 className="text-sm font-semibold text-light-700">猜你想搜</h2>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {guessSearchList.map((item, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setQuery(item)
-                  addSearchHistory(item)
-                }}
-                className="text-left px-3 py-2 bg-white rounded-xl text-sm text-light-700 border border-light-100 hover:border-light-200 transition-colors"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Flame size={16} className="text-accent-primary" />
-            <h2 className="text-sm font-semibold text-light-700">小红书热点</h2>
-          </div>
-          <div className="space-y-1">
-            {hotSearchList.map((item) => (
-              <button
-                key={item.rank}
-                onClick={() => {
-                  setQuery(item.title)
-                  addSearchHistory(item.title)
-                }}
-                className="w-full flex items-center gap-3 py-3 border-b border-light-100 last:border-0 hover:bg-light-50 transition-colors"
-              >
-                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${item.rank <= 3 ? 'bg-accent-primary text-white' : 'bg-light-100 text-light-500'
-                  }`}>
-                  {item.rank}
-                </span>
-                <span className="flex-1 text-left text-sm text-light-700">{item.title}</span>
-                {item.hot && (
-                  <span className="px-2 py-0.5 bg-accent-primary/10 text-accent-primary text-xs rounded-full">热</span>
-                )}
-                {item.new && (
-                  <span className="px-2 py-0.5 bg-accent-orange/10 text-accent-orange text-xs rounded-full">新</span>
-                )}
-                <span className="text-xs text-light-400">{item.views}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+        {!focusMode && (
+          <>
+            <div className="mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles size={16} className="text-accent-orange" />
+                <h2 className="text-sm font-semibold text-light-700">猜你想搜</h2>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {guessSearchList.map((item, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setQuery(item)
+                      addSearchHistory(item)
+                    }}
+                    className="text-left px-3 py-2 bg-white rounded-xl text-sm text-light-700 border border-light-100 hover:border-light-200 transition-colors"
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Flame size={16} className="text-accent-primary" />
+                <h2 className="text-sm font-semibold text-light-700">小红书热点</h2>
+              </div>
+              <div className="space-y-1">
+                {hotSearchList.map((item) => (
+                  <button
+                    key={item.rank}
+                    onClick={() => {
+                      setQuery(item.title)
+                      addSearchHistory(item.title)
+                    }}
+                    className="w-full flex items-center gap-3 py-3 border-b border-light-100 last:border-0 hover:bg-light-50 transition-colors"
+                  >
+                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${item.rank <= 3 ? 'bg-accent-primary text-white' : 'bg-light-100 text-light-500'
+                      }`}>
+                      {item.rank}
+                    </span>
+                    <span className="flex-1 text-left text-sm text-light-700">{item.title}</span>
+                    {item.hot && (
+                      <span className="px-2 py-0.5 bg-accent-primary/10 text-accent-primary text-xs rounded-full">热</span>
+                    )}
+                    {item.new && (
+                      <span className="px-2 py-0.5 bg-accent-orange/10 text-accent-orange text-xs rounded-full">新</span>
+                    )}
+                    <span className="text-xs text-light-400">{item.views}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </main>
     </div>
   )

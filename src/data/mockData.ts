@@ -173,6 +173,8 @@ export const interestData: InterestItem[] = [
   { name: '其他', value: 15, percentage: 15, color: '#94a3b8' },
 ]
 
+export const screenTimeOptions = [15, 30, 60, 90, 120]
+
 export const settingsData: SettingItem[] = [
   { id: '1', label: '账号与安全', icon: 'Lock', type: 'navigate' },
   { id: '2', label: '隐私设置', icon: 'Users', type: 'navigate' },

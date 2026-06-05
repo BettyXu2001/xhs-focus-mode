@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAppStore } from '@/store/appStore'
-import { homeCards, focusModeCards, hotSearchList, guessSearchList, commentsData, categories } from '@/data/mockData'
+import { homeCards, focusModeCards, hotSearchList, guessSearchList, commentsData, categories, screenTimeOptions } from '@/data/mockData'
+import { ScreenTimeModal } from '@/components/ScreenTimeModal'
 
 function Switch({ active, onClick }: { active: boolean; onClick: () => void }) {
   return (
@@ -143,7 +144,7 @@ function DiscoverPage() {
 }
 
 function SearchPage() {
-  const { setCurrentPage, searchHistory, addSearchHistory, clearSearchHistory } = useAppStore()
+  const { setCurrentPage, searchHistory, addSearchHistory, clearSearchHistory, focusMode } = useAppStore()
   const [query, setQuery] = useState('')
 
   return (
@@ -166,7 +167,11 @@ function SearchPage() {
         </svg>
         <span className="text-gray-800 text-sm cursor-pointer" onClick={() => { if (query) addSearchHistory(query); }}>搜索</span>
       </div>
-      <div className="px-4 text-xs text-gray-400 mb-4 bg-white">当前搜索已实时影响推荐</div>
+      {!focusMode ? (
+        <div className="px-4 text-xs text-gray-400 mb-4 bg-white">当前搜索已实时影响推荐</div>
+      ) : (
+        <div className="px-4 text-xs text-green-600 mb-4 bg-green-50 py-2">专注模式 - 沉浸式搜索</div>
+      )}
       <div className="scroll-container px-4 bg-white">
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
@@ -183,37 +188,47 @@ function SearchPage() {
             ))}
           </div>
         </div>
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-gray-900 text-sm font-bold">猜你想搜</span>
-            <svg className="text-gray-400 text-lg cursor-pointer" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
-            </svg>
-          </div>
-          <div className="grid grid-cols-2 gap-y-3">
-            {guessSearchList.map((item, i) => (
-              <span key={i} className="text-gray-800 text-sm cursor-pointer">{item}</span>
-            ))}
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-900 text-sm font-bold">小红书热点</span>
-              <span className="bg-red-500 text-[10px] text-white px-1 rounded">HOT</span>
-            </div>
-            <span className="text-gray-400 text-xs">查看更多</span>
-          </div>
-          <div className="space-y-4">
-            {hotSearchList.map((item) => (
-              <div key={item.rank} className="flex items-center gap-3">
-                <span className={`font-bold italic w-4 ${item.rank === 1 ? 'text-red-500' : 'text-orange-500'}`}>{item.rank}</span>
-                <span className="text-gray-800 text-sm flex-1">{item.title}</span>
-                <span className="text-gray-400 text-xs">{item.views}</span>
+        {!focusMode && (
+          <>
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-gray-900 text-sm font-bold">猜你想搜</span>
+                <svg className="text-gray-400 text-lg cursor-pointer" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                </svg>
               </div>
-            ))}
+              <div className="grid grid-cols-2 gap-y-3">
+                {guessSearchList.map((item, i) => (
+                  <span key={i} className="text-gray-800 text-sm cursor-pointer">{item}</span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-900 text-sm font-bold">小红书热点</span>
+                  <span className="bg-red-500 text-[10px] text-white px-1 rounded">HOT</span>
+                </div>
+                <span className="text-gray-400 text-xs">查看更多</span>
+              </div>
+              <div className="space-y-4">
+                {hotSearchList.map((item) => (
+                  <div key={item.rank} className="flex items-center gap-3">
+                    <span className={`font-bold italic w-4 ${item.rank === 1 ? 'text-red-500' : 'text-orange-500'}`}>{item.rank}</span>
+                    <span className="text-gray-800 text-sm flex-1">{item.title}</span>
+                    <span className="text-gray-400 text-xs">{item.views}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+        {focusMode && searchHistory.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-400">暂无搜索历史</p>
+            <p className="text-sm text-gray-300 mt-2">开始搜索，开启专注之旅</p>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
@@ -307,7 +322,14 @@ function CommentsPage() {
 }
 
 function SettingsPage() {
-  const { setCurrentPage } = useAppStore()
+  const {
+    setCurrentPage,
+    screenTimeLock,
+    setScreenTimeLock,
+    screenTimeLimit,
+    setScreenTimeLimit,
+    screenTimeUsed
+  } = useAppStore()
 
   return (
     <div className="page" id="page-settings">
@@ -331,6 +353,47 @@ function SettingsPage() {
               <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
             </svg>
           </div>
+
+          <div className="bg-white border-b border-gray-50">
+            <div className="px-4 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-3 text-gray-800">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                </svg>
+                <div>
+                  <span className="text-sm">防沉迷助手</span>
+                  <p className="text-xs text-gray-500">设置每日使用时长限制</p>
+                </div>
+              </div>
+              <Switch active={screenTimeLock} onClick={() => setScreenTimeLock(!screenTimeLock)} />
+            </div>
+            {screenTimeLock && (
+              <div className="px-4 pb-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs text-gray-500">今日已使用：</span>
+                  <span className="text-sm font-medium text-gray-900">{screenTimeUsed} 分钟</span>
+                </div>
+                <div className="mb-3">
+                  <span className="text-xs text-gray-500">选择限制时长：</span>
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    {screenTimeOptions.map((minutes) => (
+                      <button
+                        key={minutes}
+                        onClick={() => setScreenTimeLimit(minutes)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${screenTimeLimit === minutes
+                          ? 'bg-red-500 text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }`}
+                      >
+                        {minutes} 分钟
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="px-4 py-4 flex items-center justify-between bg-white cursor-pointer border-b border-gray-50" onClick={() => setCurrentPage('dashboard')}>
             <div className="flex items-center gap-3 text-gray-800">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -428,7 +491,33 @@ function DashboardPage() {
 }
 
 export default function App() {
-  const { currentPage } = useAppStore()
+  const {
+    currentPage,
+    screenTimeLock,
+    screenTimeUsed,
+    screenTimeLimit
+  } = useAppStore()
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    if (screenTimeLock && screenTimeUsed < screenTimeLimit) {
+      timerRef.current = setInterval(() => {
+        useAppStore.getState().incrementScreenTime()
+      }, 60000) // 每分钟增加一次
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+    }
+  }, [screenTimeLock, screenTimeLimit])
+
+  useEffect(() => {
+    if (screenTimeLock && screenTimeUsed >= screenTimeLimit) {
+      useAppStore.getState().setShowScreenTimeModal(true)
+    }
+  }, [screenTimeLock, screenTimeUsed, screenTimeLimit])
 
   const pages = ['home', 'discover', 'search', 'comments', 'settings', 'dashboard']
   const activePage = pages.includes(currentPage) ? currentPage : 'home'
@@ -446,6 +535,7 @@ export default function App() {
       <CommentsPage />
       <SettingsPage />
       <DashboardPage />
+      <ScreenTimeModal />
     </div>
   )
 }
