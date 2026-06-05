@@ -55,7 +55,11 @@ function HomePage() {
           </svg>
           <div className="flex items-center gap-1">
             <span className="text-gray-400 text-xs">专注</span>
-            <Switch active={focusMode} onClick={() => { toggleFocusMode(); setCurrentPage(focusMode ? 'home' : 'discover') }} />
+            <Switch active={focusMode} onClick={() => {
+              const newMode = !focusMode
+              toggleFocusMode()
+              setCurrentPage(newMode ? 'discover' : 'home')
+            }} />
           </div>
         </div>
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-6">
@@ -92,7 +96,7 @@ function HomePage() {
 }
 
 function DiscoverPage() {
-  const { setCurrentPage, toggleFocusMode } = useAppStore()
+  const { setCurrentPage, toggleFocusMode, focusMode } = useAppStore()
 
   return (
     <div className="page" id="page-discover">
@@ -103,7 +107,11 @@ function DiscoverPage() {
           </svg>
           <div className="flex items-center gap-1">
             <span className="text-gray-800 text-xs">专注</span>
-            <Switch active={true} onClick={() => { toggleFocusMode(); setCurrentPage('home') }} />
+            <Switch active={focusMode} onClick={() => {
+              const newMode = !focusMode
+              toggleFocusMode()
+              setCurrentPage(newMode ? 'discover' : 'home')
+            }} />
           </div>
         </div>
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-6">

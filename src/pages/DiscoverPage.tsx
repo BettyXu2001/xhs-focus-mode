@@ -15,11 +15,11 @@ export function DiscoverPage() {
     <div className="page-content bg-light-50">
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-light-100 px-4 py-3">
         <div className="flex items-center gap-3 mb-4">
-          <button className="flex items-center gap-2 px-3 py-2 bg-light-100 rounded-full">
+          <div className="flex items-center gap-2 px-3 py-2 bg-light-100 rounded-full">
             <SlidersHorizontal size={16} className="text-light-500" />
             <span className="text-sm font-medium text-light-700">专注</span>
             <Switch isOn={focusMode} onChange={() => toggleFocusMode()} />
-          </button>
+          </div>
           <div className="flex-1 flex items-center gap-6">
             <button className="text-light-700 font-semibold border-b-2 border-accent-primary pb-1">关注</button>
             <button className="text-light-500">发现</button>
