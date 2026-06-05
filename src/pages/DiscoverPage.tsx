@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Search, SlidersHorizontal } from 'lucide-react'
 import { Card } from '@/components/Card'
 import { Switch } from '@/components/Switch'
@@ -7,8 +6,7 @@ import { homeContent, discoverCategories } from '@/data/mockData'
 import { useAppStore } from '@/store/appStore'
 
 export function DiscoverPage() {
-  const navigate = useNavigate()
-  const { focusMode, toggleFocusMode } = useAppStore()
+  const { focusMode, toggleFocusMode, setCurrentPage } = useAppStore()
   const [activeCategory, setActiveCategory] = useState('推荐')
 
   const filteredContent = focusMode 
@@ -34,7 +32,7 @@ export function DiscoverPage() {
             <button className="text-light-500">同城</button>
           </div>
           <button 
-            onClick={() => navigate('/search')}
+            onClick={() => setCurrentPage('search')}
             className="w-9 h-9 rounded-full bg-light-100 flex items-center justify-center"
           >
             <Search size={18} className="text-light-500" />
@@ -61,7 +59,7 @@ export function DiscoverPage() {
           <Card 
             key={item.id} 
             content={item} 
-            onClick={() => navigate(`/comments/${item.id}`)}
+            onClick={() => setCurrentPage('comments')}
           />
         ))}
       </main>

@@ -1,18 +1,22 @@
 import { ArrowLeft, TrendingUp, Clock, RefreshCw } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import { RingChart } from '@/components/RingChart'
 import { interestData } from '@/data/mockData'
+import { useAppStore } from '@/store/appStore'
 
 export function DashboardPage() {
-  const navigate = useNavigate()
+  const { setCurrentPage } = useAppStore()
+
+  const handleGoBack = () => {
+    setCurrentPage('settings')
+  }
 
   return (
     <div className="page-content bg-light-50">
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-light-100 px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button 
-              onClick={() => navigate(-1)}
+            <button
+              onClick={handleGoBack}
               className="w-9 h-9 rounded-full bg-light-100 flex items-center justify-center"
             >
               <ArrowLeft size={20} className="text-light-600" />
@@ -36,7 +40,7 @@ export function DashboardPage() {
               <div key={item.name} className="interest-item" style={{ animationDelay: `${index * 100}ms` }}>
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
-                    <span 
+                    <span
                       className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: item.color }}
                     />
@@ -45,11 +49,11 @@ export function DashboardPage() {
                   <span className="text-sm font-semibold text-light-900">{item.percentage}%</span>
                 </div>
                 <div className="h-2 bg-light-100 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full rounded-full transition-all duration-1000 ease-out"
-                    style={{ 
-                      width: `${item.percentage}%`, 
-                      backgroundColor: item.color 
+                    style={{
+                      width: `${item.percentage}%`,
+                      backgroundColor: item.color
                     }}
                   />
                 </div>
@@ -82,9 +86,9 @@ export function DashboardPage() {
               const height = 30 + Math.random() * 70
               return (
                 <div key={day} className="flex-1 flex flex-col items-center">
-                  <div 
+                  <div
                     className="w-full rounded-t-lg bg-gradient-to-t from-accent-primary to-accent-purple mb-2 transition-all duration-500"
-                    style={{ 
+                    style={{
                       height: `${height}%`,
                       animationDelay: `${index * 100}ms`
                     }}

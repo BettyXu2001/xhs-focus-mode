@@ -2,28 +2,6 @@ import { useState } from 'react'
 import { useAppStore } from '@/store/appStore'
 import { homeCards, focusModeCards, hotSearchList, guessSearchList, commentsData, categories } from '@/data/mockData'
 
-function StatusBar() {
-  return (
-    <div className="status-bar">
-      <span>12:00</span>
-      <div className="flex items-center gap-1">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor">
-          <path d="M1 4.5C1 3.67 1.67 3 2.5 3h2C5.33 3 6 3.67 6 4.5v3C6 8.33 5.33 9 4.5 9h-2C1.67 9 1 8.33 1 7.5v-3z" />
-          <path d="M7 2.5C7 1.67 7.67 1 8.5 1h2c.83 0 1.5.67 1.5 1.5v7c0 .83-.67 1.5-1.5 1.5h-2c-.83 0-1.5-.67-1.5-1.5v-7z" />
-          <path d="M13 0.5C13 0.22 13.22 0 13.5 0h2c.28 0 .5.22.5.5v11c0 .28-.22.5-.5.5h-2c-.28 0-.5-.22-.5-.5v-11z" />
-        </svg>
-        <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor">
-          <path d="M8 2C5.79 2 4 3.79 4 6c0 3 4 6 4 6s4-3 4-6c0-2.21-1.79-4-4-4zm0 5.5C7 7.5 6 6.73 6 6c0-.73 1-1.5 2-1.5s2 .77 2 1.5c0 .73-1 1.5-2 1.5z" />
-        </svg>
-        <svg width="24" height="12" viewBox="0 0 24 12" fill="currentColor">
-          <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="currentColor" fill="none" />
-          <rect x="2" y="2" width="17" height="8" rx="1" fill="currentColor" />
-        </svg>
-      </div>
-    </div>
-  )
-}
-
 function Switch({ active, onClick }: { active: boolean; onClick: () => void }) {
   return (
     <div className={`switch-track ${active ? 'active' : ''}`} onClick={onClick}>
@@ -42,7 +20,7 @@ function HeartIcon({ filled }: { filled?: boolean }) {
 
 function ContentCard({ card, onClick }: { card: typeof homeCards[0]; onClick?: () => void }) {
   return (
-    <div className="bg-card-bg rounded-lg overflow-hidden mb-2 shadow-sm" onClick={onClick}>
+    <div className="bg-white rounded-lg overflow-hidden mb-2 shadow-sm border border-gray-100" onClick={onClick}>
       <img alt={card.title} className={`w-full object-cover ${card.imageHeight}`} src="https://picsum.photos/200/300" />
       <div className="p-2">
         <h3 className="text-gray-900 text-sm font-bold leading-tight">{card.title}</h3>
@@ -50,7 +28,7 @@ function ContentCard({ card, onClick }: { card: typeof homeCards[0]; onClick?: (
         <div className="flex items-center justify-between mt-2">
           <div className="flex flex-col">
             {card.authorTag && (
-              <span className="bg-green-100 text-green-600 text-xs px-1 rounded w-fit">{card.authorTag}</span>
+              <span className="bg-green-100 text-green-600 text-[10px] px-1 rounded w-fit">{card.authorTag}</span>
             )}
             <span className="text-gray-400 text-xs">{card.author}</span>
           </div>
@@ -70,7 +48,7 @@ function HomePage() {
   return (
     <div className="page active" id="page-home">
       <div className="px-4 py-2 flex items-center justify-between bg-white border-b border-gray-100 relative">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('settings')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
           </svg>
@@ -113,21 +91,21 @@ function HomePage() {
 }
 
 function DiscoverPage() {
-  const { setCurrentPage, toggleFocusMode, focusMode } = useAppStore()
+  const { setCurrentPage, toggleFocusMode } = useAppStore()
 
   return (
     <div className="page" id="page-discover">
-      <div className="px-4 py-2 flex items-center bg-white border-b border-gray-100">
-        <div className="w-8 flex items-center">
+      <div className="px-4 py-2 flex items-center justify-between bg-white border-b border-gray-100 relative">
+        <div className="flex items-center gap-2">
           <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('settings')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
           </svg>
-        </div>
-        <div className="flex-1 flex items-center justify-center gap-4">
           <div className="flex items-center gap-1">
             <span className="text-gray-800 text-xs">专注</span>
             <Switch active={true} onClick={() => { toggleFocusMode(); setCurrentPage('home') }} />
           </div>
+        </div>
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-6">
           <div className="relative">
             <span className="text-gray-800 text-sm">关注</span>
             <span className="absolute -top-1 -right-2 bg-red-500 text-[8px] text-white rounded-full px-1">3</span>
@@ -135,7 +113,7 @@ function DiscoverPage() {
           <span className="text-primary text-sm font-bold">发现</span>
           <span className="text-gray-800 text-sm">同城</span>
         </div>
-        <div className="w-8 flex items-center justify-end">
+        <div className="flex items-center gap-2">
           <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('search')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
           </svg>
@@ -170,7 +148,6 @@ function SearchPage() {
 
   return (
     <div className="page" id="page-search">
-      <StatusBar />
       <div className="p-4 flex items-center gap-3 bg-white border-b border-gray-100">
         <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('home')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
@@ -260,7 +237,6 @@ function CommentsPage() {
 
   return (
     <div className="page" id="page-comments">
-      <StatusBar />
       <div className="p-4 flex items-center justify-between border-b border-gray-100 bg-white">
         <div className="flex items-center gap-3">
           <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('home')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">

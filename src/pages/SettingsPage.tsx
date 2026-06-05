@@ -1,17 +1,15 @@
 import { useState } from 'react'
 import { ArrowLeft, Moon, Sun, Shield } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import { SettingItem } from '@/components/SettingItem'
 import { settingsData } from '@/data/mockData'
 import { useAppStore } from '@/store/appStore'
 
 export function SettingsPage() {
-  const navigate = useNavigate()
-  const { screenTimeLock, setScreenTimeLock } = useAppStore()
+  const { screenTimeLock, setScreenTimeLock, setCurrentPage, currentTab } = useAppStore()
   const [localSettings, setLocalSettings] = useState(settingsData)
 
   const handleSwitchChange = (id: string, isOn: boolean) => {
-    setLocalSettings(prev => prev.map(item => 
+    setLocalSettings(prev => prev.map(item =>
       item.id === id ? { ...item, isOn } : item
     ))
     if (id === '9') {
@@ -21,16 +19,20 @@ export function SettingsPage() {
 
   const handleItemClick = (action?: string) => {
     if (action === 'dashboard') {
-      navigate('/dashboard')
+      setCurrentPage('dashboard')
     }
+  }
+
+  const handleGoBack = () => {
+    setCurrentPage(currentTab === 'discover' ? 'discover' : 'home')
   }
 
   return (
     <div className="page-content bg-light-50">
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-light-100 px-4 py-3">
         <div className="flex items-center gap-3">
-          <button 
-            onClick={() => navigate(-1)}
+          <button
+            onClick={handleGoBack}
             className="w-9 h-9 rounded-full bg-light-100 flex items-center justify-center"
           >
             <ArrowLeft size={20} className="text-light-600" />
@@ -41,18 +43,18 @@ export function SettingsPage() {
       <main className="px-4 py-4">
         <div className="bg-white rounded-2xl overflow-hidden mb-4">
           {localSettings.slice(0, 4).map(item => (
-            <SettingItem 
-              key={item.id} 
-              item={item} 
+            <SettingItem
+              key={item.id}
+              item={item}
               onClick={() => handleItemClick(item.action)}
             />
           ))}
         </div>
         <div className="bg-white rounded-2xl overflow-hidden mb-4">
           {localSettings.slice(4, 9).map(item => (
-            <SettingItem 
-              key={item.id} 
-              item={item} 
+            <SettingItem
+              key={item.id}
+              item={item}
               onSwitchChange={handleSwitchChange}
               onClick={() => handleItemClick(item.action)}
             />
@@ -60,9 +62,9 @@ export function SettingsPage() {
         </div>
         <div className="bg-white rounded-2xl overflow-hidden mb-4">
           {localSettings.slice(9, 13).map(item => (
-            <SettingItem 
-              key={item.id} 
-              item={item} 
+            <SettingItem
+              key={item.id}
+              item={item}
               onClick={() => handleItemClick(item.action)}
             />
           ))}

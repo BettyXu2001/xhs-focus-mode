@@ -2,17 +2,17 @@ import { Home, Compass, MessageCircle, User } from 'lucide-react'
 import { useAppStore } from '@/store/appStore'
 
 export function TabBar() {
-  const { currentTab, setCurrentTab } = useAppStore()
+  const { currentTab, setCurrentTab, setCurrentPage } = useAppStore()
 
   const tabs = [
-    { id: 'home' as const, icon: Home, label: '首页' },
-    { id: 'discover' as const, icon: Compass, label: '发现' },
-    { id: 'messages' as const, icon: MessageCircle, label: '消息' },
-    { id: 'profile' as const, icon: User, label: '我' },
+    { id: 'home' as const, page: 'home', icon: Home, label: '首页' },
+    { id: 'discover' as const, page: 'discover', icon: Compass, label: '发现' },
+    { id: 'messages' as const, page: 'discover', icon: MessageCircle, label: '消息' },
+    { id: 'profile' as const, page: 'settings', icon: User, label: '我' },
   ]
 
   return (
-    <div className="tab-bar bg-white border-t border-light-200 px-4 py-2">
+    <div className="tab-bar bg-white border-t border-light-200 px-4 py-2 absolute bottom-0 left-0 right-0">
       <div className="flex justify-around items-center">
         {tabs.map((tab) => {
           const Icon = tab.icon
@@ -20,7 +20,10 @@ export function TabBar() {
           return (
             <button
               key={tab.id}
-              onClick={() => setCurrentTab(tab.id)}
+              onClick={() => {
+                setCurrentTab(tab.id)
+                setCurrentPage(tab.page)
+              }}
               className={`flex flex-col items-center py-2 px-4 rounded-xl transition-colors ${
                 isActive ? 'text-accent-primary' : 'text-light-500'
               }`}

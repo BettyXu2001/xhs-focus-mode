@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import { ArrowLeft, Search, Camera, Trash2, Flame, Sparkles } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '@/store/appStore'
 import { hotSearchList, guessSearchList } from '@/data/mockData'
 
 export function SearchPage() {
-  const navigate = useNavigate()
-  const { searchHistory, addSearchHistory, clearSearchHistory } = useAppStore()
+  const { searchHistory, addSearchHistory, clearSearchHistory, setCurrentPage, currentTab } = useAppStore()
   const [query, setQuery] = useState('')
 
   const handleSearch = () => {
@@ -15,12 +13,16 @@ export function SearchPage() {
     }
   }
 
+  const handleGoBack = () => {
+    setCurrentPage(currentTab === 'discover' ? 'discover' : 'home')
+  }
+
   return (
     <div className="page-content bg-light-50">
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-light-100 px-4 py-3">
         <div className="flex items-center gap-3 mb-4">
-          <button 
-            onClick={() => navigate(-1)}
+          <button
+            onClick={handleGoBack}
             className="w-9 h-9 rounded-full bg-light-100 flex items-center justify-center"
           >
             <ArrowLeft size={20} className="text-light-600" />
@@ -39,7 +41,7 @@ export function SearchPage() {
               <Camera size={16} className="text-light-500" />
             </button>
           </div>
-          <button 
+          <button
             onClick={handleSearch}
             className="text-sm text-accent-primary font-medium"
           >
@@ -55,7 +57,7 @@ export function SearchPage() {
           <div className="mb-6">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-semibold text-light-700">历史记录</h2>
-              <button 
+              <button
                 onClick={clearSearchHistory}
                 className="flex items-center gap-1 text-xs text-light-400 hover:text-light-600"
               >
@@ -114,9 +116,8 @@ export function SearchPage() {
                 }}
                 className="w-full flex items-center gap-3 py-3 border-b border-light-100 last:border-0 hover:bg-light-50 transition-colors"
               >
-                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                  item.rank <= 3 ? 'bg-accent-primary text-white' : 'bg-light-100 text-light-500'
-                }`}>
+                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${item.rank <= 3 ? 'bg-accent-primary text-white' : 'bg-light-100 text-light-500'
+                  }`}>
                   {item.rank}
                 </span>
                 <span className="flex-1 text-left text-sm text-light-700">{item.title}</span>

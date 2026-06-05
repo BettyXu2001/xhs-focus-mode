@@ -1,11 +1,11 @@
 import { ArrowLeft, Share2, Heart, MessageCircle, Send } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import { CommentItem } from '@/components/CommentItem'
 import { commentsData } from '@/data/mockData'
 import { useState } from 'react'
+import { useAppStore } from '@/store/appStore'
 
 export function CommentsPage() {
-  const navigate = useNavigate()
+  const { setCurrentPage, currentTab } = useAppStore()
   const [commentText, setCommentText] = useState('')
   const [liked, setLiked] = useState(false)
   const [likes, setLikes] = useState(932)
@@ -19,12 +19,16 @@ export function CommentsPage() {
     setLiked(!liked)
   }
 
+  const handleGoBack = () => {
+    setCurrentPage(currentTab === 'discover' ? 'discover' : 'home')
+  }
+
   return (
     <div className="page-content bg-light-50">
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-light-100 px-4 py-3">
         <div className="flex items-center gap-3">
-          <button 
-            onClick={() => navigate(-1)}
+          <button
+            onClick={handleGoBack}
             className="w-9 h-9 rounded-full bg-light-100 flex items-center justify-center"
           >
             <ArrowLeft size={20} className="text-light-600" />
@@ -95,7 +99,7 @@ export function CommentsPage() {
               placeholder="写下你的评论..."
               className="flex-1 bg-transparent outline-none text-sm text-light-700 placeholder:text-light-400"
             />
-            <button 
+            <button
               onClick={handleLike}
               className={`p-2 rounded-full transition-colors ${liked ? 'text-accent-primary' : 'text-light-400'}`}
             >
