@@ -37,12 +37,13 @@ export interface SettingItem {
   label: string
   icon?: string
   description?: string
-  type: 'switch' | 'navigate' | 'action'
+  type: 'switch' | 'navigate' | 'action' | 'timeLimit'
   value?: boolean | string
   hasSwitch?: boolean
   isOn?: boolean
   action?: string
   duration?: number
+  options?: number[]
 }
 
 export const homeCards: ContentCard[] = [

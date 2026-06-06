@@ -43,11 +43,11 @@ function ContentCard({ card, onClick }: { card: typeof homeCards[0]; onClick?: (
   )
 }
 
-function HomePage() {
+function HomePage({ isActive }: { isActive: boolean }) {
   const { setCurrentPage, toggleFocusMode, focusMode } = useAppStore()
 
   return (
-    <div className="page active" id="page-home">
+    <div className={`page ${isActive ? 'active' : ''}`} id="page-home">
       <div className="px-4 py-2 flex items-center justify-between bg-white border-b border-gray-100 relative">
         <div className="flex items-center gap-2">
           <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('settings')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -95,11 +95,11 @@ function HomePage() {
   )
 }
 
-function DiscoverPage() {
+function DiscoverPage({ isActive }: { isActive: boolean }) {
   const { setCurrentPage, toggleFocusMode, focusMode } = useAppStore()
 
   return (
-    <div className="page" id="page-discover">
+    <div className={`page ${isActive ? 'active' : ''}`} id="page-discover">
       <div className="px-4 py-2 flex items-center justify-between bg-white border-b border-gray-100 relative">
         <div className="flex items-center gap-2">
           <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('settings')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -151,12 +151,12 @@ function DiscoverPage() {
   )
 }
 
-function SearchPage() {
+function SearchPage({ isActive }: { isActive: boolean }) {
   const { setCurrentPage, searchHistory, addSearchHistory, clearSearchHistory, focusMode } = useAppStore()
   const [query, setQuery] = useState('')
 
   return (
-    <div className="page" id="page-search">
+    <div className={`page ${isActive ? 'active' : ''}`} id="page-search">
       <div className="p-4 flex items-center gap-3 bg-white border-b border-gray-100">
         <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('home')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
@@ -242,7 +242,7 @@ function SearchPage() {
   )
 }
 
-function CommentsPage() {
+function CommentsPage({ isActive }: { isActive: boolean }) {
   const { setCurrentPage } = useAppStore()
   const [liked, setLiked] = useState<Record<string, boolean>>({})
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>({
@@ -259,7 +259,7 @@ function CommentsPage() {
   }
 
   return (
-    <div className="page" id="page-comments">
+    <div className={`page ${isActive ? 'active' : ''}`} id="page-comments">
       <div className="p-4 flex items-center justify-between border-b border-gray-100 bg-white">
         <div className="flex items-center gap-3">
           <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('home')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -329,7 +329,7 @@ function CommentsPage() {
   )
 }
 
-function SettingsPage() {
+function SettingsPage({ isActive }: { isActive: boolean }) {
   const {
     setCurrentPage,
     screenTimeLock,
@@ -340,7 +340,7 @@ function SettingsPage() {
   } = useAppStore()
 
   return (
-    <div className="page" id="page-settings">
+    <div className={`page ${isActive ? 'active' : ''}`} id="page-settings">
       <div className="p-4 flex items-center justify-between bg-white border-b border-gray-100">
         <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('home')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
@@ -430,11 +430,11 @@ function SettingsPage() {
   )
 }
 
-function DashboardPage() {
+function DashboardPage({ isActive }: { isActive: boolean }) {
   const { setCurrentPage } = useAppStore()
 
   return (
-    <div className="page" id="page-dashboard">
+    <div className={`page ${isActive ? 'active' : ''}`} id="page-dashboard">
       <div className="p-4 flex items-center justify-between bg-white border-b border-gray-100">
         <svg className="text-gray-800 text-2xl cursor-pointer" onClick={() => setCurrentPage('settings')} width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
@@ -532,17 +532,12 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <script dangerouslySetInnerHTML={{
-        __html: `
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-        document.getElementById('page-' + '${activePage}')?.classList.add('active');
-      `}} />
-      <HomePage />
-      <DiscoverPage />
-      <SearchPage />
-      <CommentsPage />
-      <SettingsPage />
-      <DashboardPage />
+      <HomePage isActive={activePage === 'home'} />
+      <DiscoverPage isActive={activePage === 'discover'} />
+      <SearchPage isActive={activePage === 'search'} />
+      <CommentsPage isActive={activePage === 'comments'} />
+      <SettingsPage isActive={activePage === 'settings'} />
+      <DashboardPage isActive={activePage === 'dashboard'} />
       <ScreenTimeModal />
     </div>
   )
