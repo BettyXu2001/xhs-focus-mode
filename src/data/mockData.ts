@@ -176,17 +176,4 @@ export const interestData: InterestItem[] = [
 
 export const screenTimeOptions = [15, 30, 60, 90, 120]
 
-export const settingsData: SettingItem[] = [
-  { id: '1', label: '账号与安全', icon: 'Lock', type: 'navigate' },
-  { id: '2', label: '隐私设置', icon: 'Users', type: 'navigate' },
-  { id: '3', label: '通知设置', icon: 'Bell', type: 'navigate' },
-  { id: '4', label: '兴趣仪表盘', icon: 'PieChart', type: 'action', action: 'dashboard' },
-  { id: '5', label: '深色模式', icon: 'Moon', type: 'switch', hasSwitch: true, isOn: false },
-  { id: '6', label: '自动播放', icon: 'Video', type: 'switch', hasSwitch: true, isOn: true },
-  { id: '7', label: '省流量模式', icon: 'Sparkles', type: 'switch', hasSwitch: true, isOn: false },
-  { id: '8', label: '高清画质', icon: 'Layers', type: 'switch', hasSwitch: true, isOn: true },
-  { id: '9', label: '屏幕使用时间', icon: 'Clock', description: '每日使用时长限制', type: 'switch', hasSwitch: true, isOn: false, duration: 30 },
-  { id: '10', label: '存储空间', icon: 'HardDrive', type: 'navigate', value: '2.3GB' },
-  { id: '11', label: '通用设置', icon: 'Settings', type: 'navigate' },
-  { id: '12', label: '关于小红书', icon: 'Layout', type: 'navigate' },
-]
+

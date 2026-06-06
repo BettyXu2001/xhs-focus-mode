@@ -1,19 +1,28 @@
-import { useState } from 'react'
-import { ArrowLeft, Moon, Sun, Shield } from 'lucide-react'
+import { ArrowLeft, Shield } from 'lucide-react'
 import { SettingItem } from '@/components/SettingItem'
-import { settingsData } from '@/data/mockData'
 import { useAppStore } from '@/store/appStore'
 
 export function SettingsPage() {
-  const { screenTimeLock, setScreenTimeLock, setCurrentPage, currentTab } = useAppStore()
-  const [localSettings, setLocalSettings] = useState(settingsData)
+  const { 
+    settings, 
+    updateSetting, 
+    setCurrentPage, 
+    currentTab,
+    setScreenTimeLock,
+    setScreenTimeLimit
+  } = useAppStore()
 
   const handleSwitchChange = (id: string, isOn: boolean) => {
-    setLocalSettings(prev => prev.map(item =>
-      item.id === id ? { ...item, isOn } : item
-    ))
+    updateSetting(id, { isOn })
     if (id === '9') {
       setScreenTimeLock(isOn)
+    }
+  }
+
+  const handleDurationChange = (id: string, duration: number) => {
+    updateSetting(id, { duration })
+    if (id === '9') {
+      setScreenTimeLimit(duration)
     }
   }
 
@@ -42,7 +51,7 @@ export function SettingsPage() {
       </header>
       <main className="px-4 py-4">
         <div className="bg-white rounded-2xl overflow-hidden mb-4">
-          {localSettings.slice(0, 4).map(item => (
+          {settings.slice(0, 4).map(item => (
             <SettingItem
               key={item.id}
               item={item}
@@ -51,17 +60,18 @@ export function SettingsPage() {
           ))}
         </div>
         <div className="bg-white rounded-2xl overflow-hidden mb-4">
-          {localSettings.slice(4, 9).map(item => (
+          {settings.slice(4, 9).map(item => (
             <SettingItem
               key={item.id}
               item={item}
               onSwitchChange={handleSwitchChange}
+              onDurationChange={handleDurationChange}
               onClick={() => handleItemClick(item.action)}
             />
           ))}
         </div>
         <div className="bg-white rounded-2xl overflow-hidden mb-4">
-          {localSettings.slice(9, 13).map(item => (
+          {settings.slice(9, 13).map(item => (
             <SettingItem
               key={item.id}
               item={item}

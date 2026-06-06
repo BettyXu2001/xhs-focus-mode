@@ -3,7 +3,7 @@ import {
   ChevronRight, User, Settings, Bell, Lock, HardDrive, 
   Sliders, PieChart, Layers, Video, MapPin, Layout, Users, Sparkles, Clock, ChevronDown 
 } from 'lucide-react'
-import { SettingItem as SettingItemType } from '@/data/mockData'
+import { SettingItem as SettingItemType } from '@/store/appStore'
 import { Switch } from './Switch'
 
 interface SettingItemProps {

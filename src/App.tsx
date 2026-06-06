@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useAppStore } from '@/store/appStore'
 import { homeCards, focusModeCards, hotSearchList, guessSearchList, commentsData, categories, screenTimeOptions } from '@/data/mockData'
 import { ScreenTimeModal } from '@/components/ScreenTimeModal'
+import { TabBar } from '@/components/TabBar'
 
 function Switch({ active, onClick }: { active: boolean; onClick: () => void }) {
   return (
@@ -539,6 +540,7 @@ export default function App() {
       <SettingsPage isActive={activePage === 'settings'} />
       <DashboardPage isActive={activePage === 'dashboard'} />
       <ScreenTimeModal />
+      <TabBar />
     </div>
   )
 }
